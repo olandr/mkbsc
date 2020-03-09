@@ -9,20 +9,20 @@ import os
 
 def export(game, filename, view=True, folder="pictures", epistemic="nice", supress_edges=False, group_observations=None, target_states=None, **kwargs):
     """Exports the game as a picture
-    
+
     view -- if true, opens the file when done
     folder -- the subfolder to save the picture in
     epistemic -- how to render the states in the graph. Can be 'verbose', 'nice' or 'isocheck'
     supress_edges -- if true, does not draw labels for the transitions
     group_observations -- if true, the observations will be arranged in marked subgraphs. Only works for singleplayer games
     target_states -- the states (or singleton knowledge in states) which should be marked in the rendered graph"""
-    
+
     with open(folder + "/" + filename + ".dot", "w") as dotfile:
         dotfile.write(game.to_dot(epistemic=epistemic, supress_edges=supress_edges, group_observations=group_observations, target_states=target_states, **kwargs))
 
     call(["dot", "-Tpng", folder + "/" + filename + ".dot", "-o", folder + "/" + filename + ".png"])
     if view:
-        call(("start " if os.name == "nt" else "xdg-open ") + folder + "/" + filename + ".png", shell=True)
+        call(("start " if os.name == "nt" else "open ") + folder + "/" + filename + ".png", shell=True)
 
 
 def from_file(filename, folder="games", fileext=".game", validate=True):
@@ -65,7 +65,7 @@ def to_string(game):
 def _serialize(game):
     #Alphabet
     yield "Alphabet:"
-    
+
     action_id = 0
     alphabet_dicts = [{} for player in range(game.player_count)]
     for i, playeralphabet in enumerate(game.alphabet):
@@ -76,7 +76,7 @@ def _serialize(game):
 
     yield ""
 
-    
+
     #States
     def _pick(_set):
         for x in _set:
@@ -96,7 +96,7 @@ def _serialize(game):
 
             for player in range(game.player_count):
                 newstates.update(state[player])
-            
+
             state_id -= 1
         states = newstates
 
@@ -108,7 +108,7 @@ def _serialize(game):
         state_id += 1
         state_dict[state] = state_id
         yield "{0}={1}".format(state_id + id_add, repr(state[0]))
-    
+
     yield ""
     yield "Knowledge States:"
 
@@ -182,7 +182,7 @@ def _parse(iterable, validate=True):
 
         alphabet.append(currentalphabet)
         line = iterator.__next__().strip()
-        
+
     iterator.__next__()
 
 
@@ -194,7 +194,7 @@ def _parse(iterable, validate=True):
     while line != "" and not line.isspace():
         id = int(line[:line.index("=")])
         value = line[line.index("=") + 1:]
-            
+
         if value[0] in "\'\"":
             value = value[1:-2]
 
@@ -220,7 +220,7 @@ def _parse(iterable, validate=True):
         knowledge = line[line.index("=") + 1:]
 
         knowledge = [frozenset(state_dict[int(i)] for i in playerknowledge.split(",")) for playerknowledge in knowledge.split("|")]
-        
+
         state = State(*knowledge)
         state_dict[id] = state
         top_states.add(state)
@@ -228,7 +228,7 @@ def _parse(iterable, validate=True):
             top_states.difference_update(playerknowledge)
 
         line = iterator.__next__()
-    
+
     line = iterator.__next__()
     initial_state = state_dict[int(line[line.index(": ") + 2:])]
 
@@ -243,7 +243,7 @@ def _parse(iterable, validate=True):
     while line != "" and not line.isspace():
         grouping = [[state_dict[int(s)] for s in observation.split(",")] for observation in line.split("|")]
         state_groupings.append(grouping)
-        
+
         line = iterator.__next__()
 
     iterator.__next__()
