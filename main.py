@@ -4,59 +4,67 @@ from mkbsc import MultiplayerGame, iterate_until_isomorphic, \
                   export, to_string, from_string, to_file, from_file
 
 #states
-L = ["draw", "Alead", "Blead", "Awin", "Bwin"]
+L = ["draw", "a", "b", "ab", "aa", "bb", "aab", "aabb", "abb", "A", "B"]
 #initial state
 L0 = "draw"
 #action alphabet
-Sigma = (("-a", "a", "+a"), ("-b", "b", "+b"))
+Sigma = (("0a", "1a"), ("0b", "1b"))
 #action labeled transitions
 Delta = [
-    ("draw", ("+a", "b"),  "Alead"),
-    ("draw", ("+a", "-b"),  "draw"),
-    ("draw", ("+a", "+b"),  "draw"),
+    ("draw", ("0a", "0b"),  "draw"),
+    ("draw", ("0a", "1b"),  "b"),
+    ("draw", ("1a", "0b"),  "a"),
+    ("draw", ("1a", "1b"),  "ab"),
 
-    ("draw", ("-a", "b"),  "draw"),
-    ("draw", ("-a", "-b"),  "draw"),
-    ("draw", ("-a", "+b"),  "draw"),
+    ("a", ("0a", "0b"),  "a"),
+    ("a", ("0a", "1b"),  "ab"),
+    ("a", ("1a", "0b"),  "aa"),
+    ("a", ("1a", "1b"),  "aab"),
 
-    ("draw", ("a", "b"),  "draw"),
-    ("draw", ("a", "-b"),  "draw"),
-    ("draw", ("a", "+b"),  "Blead"),
+    ("b", ("0a", "0b"),  "b"),
+    ("b", ("0a", "1b"),  "bb"),
+    ("b", ("1a", "0b"),  "ab"),
+    ("b", ("1a", "1b"),  "abb"),
 
-    ("Alead", ("+a", "b"),  "Awin"),
-    ("Alead", ("+a", "-b"),  "Alead"),
-    ("Alead", ("+a", "+b"),  "Awin"),
+    ("ab", ("0a", "0b"),  "ab"),
+    ("ab", ("0a", "1b"),  "abb"),
+    ("ab", ("1a", "0b"),  "aab"),
+    ("ab", ("1a", "1b"),  "aabb"),
 
-    ("Alead", ("-a", "b"),  "Alead"),
-    ("Alead", ("-a", "-b"),  "Alead"),
-    ("Alead", ("-a", "+b"),  "Alead"),
+    ("aa", ("0a", "0b"),  "aa"),
+    ("aa", ("0a", "1b"),  "aab"),
+    ("aa", ("1a", "0b"),  "A"),
+    ("aa", ("1a", "1b"),  "A"),
 
-    ("Alead", ("a", "b"),  "Alead"),
-    ("Alead", ("a", "-b"),  "draw"),
-    ("Alead", ("a", "+b"),  "draw"),
+    ("bb", ("0a", "0b"),  "bb"),
+    ("bb", ("0a", "1b"),  "B"),
+    ("bb", ("1a", "0b"),  "abb"),
+    ("bb", ("1a", "1b"),  "B"),
 
-    ("Blead", ("+a", "b"),  "draw"),
-    ("Blead", ("+a", "-b"),  "Blead"),
-    ("Blead", ("+a", "+b"),  "Bwin"),
+    ("aab", ("0a", "0b"),  "A"),
+    ("aab", ("0a", "1b"),  "draw"),
+    ("aab", ("1a", "0b"),  "A"),
+    ("aab", ("1a", "1b"),  "A"),
 
-    ("Blead", ("-a", "b"),  "draw"),
-    ("Blead", ("-a", "-b"),  "Blead"),
-    ("Blead", ("-a", "+b"),  "Blead"),
+    ("abb", ("0a", "0b"),  "B"),
+    ("abb", ("0a", "1b"),  "B"),
+    ("abb", ("1a", "0b"),  "draw"),
+    ("abb", ("1a", "1b"),  "B"),
 
-    ("Blead", ("a", "b"),  "Blead"),
-    ("Blead", ("a", "-b"),  "Blead"),
-    ("Blead", ("a", "+b"),  "Bwin")
-
-
+    ("aabb", ("0a", "0b"),  "draw"),
+    ("aabb", ("0a", "1b"),  "B"),
+    ("aabb", ("1a", "0b"),  "A"),
+    ("aabb", ("1a", "1b"),  "draw")
 ]
 #observation partitioning
 Obs = [
-    [["draw", "Alead", "Blead"], ["Awin"], ["Bwin"]],
-    [["draw", "Alead", "Blead"], ["Awin"], ["Bwin"]]
+    [["draw", "b", "bb"], ["a", "ab", "abb"], ["aa", "aab", "aabb"], ["A"], ["B"]],
+    [["draw", "a", "aa"], ["b", "ab", "aab"], ["bb", "abb", "aabb"], ["A"], ["B"]]
 ]
 
 #G is a MultiplayerGame-object, and so are GK and GK0
 G = MultiplayerGame.create(L, L0, Sigma, Delta, Obs)
+
 GK = G.KBSC()
 export(GK, "GK")
 
