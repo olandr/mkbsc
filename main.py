@@ -49,8 +49,8 @@ Delta = [
 ]
 #observation partitioning
 Obs = [
-    [["start"], ["draw", "0", "1"], ["b"], ["a", "abb"], ["aab"], ["A"], ["B"]],
-    [["start"], ["draw", "0", "1"], ["a"], ["b", "aab"], ["abb"], ["A"], ["B"]]
+    [["start"], ["draw", "0", "1"], ["a", "abb"], ["b", "aab"], ["A"], ["B"]],
+    [["start"], ["draw", "0", "1"], ["b", "aab"], ["a", "abb"], ["A"], ["B"]]
 ]
 
 #G is a MultiplayerGame-object, and so are GK and GK0
