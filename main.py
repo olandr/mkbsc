@@ -56,8 +56,9 @@ Obs = [
 #G is a MultiplayerGame-object, and so are GK and GK0
 G = MultiplayerGame.create(L, L0, Sigma, Delta, Obs)
 
-GK = G.KBSC()
-export(GK, "GK")
+to_file(G, "refinedWDL")
+#GK = G.KBSC()
+#export(GK, "GK")
 
 #(log2, GK2, iso_type2) = iterate_until_isomorphic(G, limit=2, print_size=False, verbose=True)
 #export(GK2, "GK2")
