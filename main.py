@@ -4,7 +4,7 @@ from mkbsc import MultiplayerGame, iterate_until_isomorphic, \
                   export, to_string, from_string, to_file, from_file
 
 #states
-L = ["0", "1", "*", "win", "lose"]
+L = ["0", "1", "*", "win"]
 #initial state
 L0 = "0"
 #action alphabet
@@ -30,8 +30,8 @@ Delta = [
 ]
 #observation partitioning
 Obs = [
-    [["0", "*", "1"], ["win"], ["lose"]],
-    [["0", "1", "*"], ["win"], ["lose"]]
+    [["0", "*", "1"], ["win"]],
+    [["0", "1", "*"], ["win"]]
 ]
 
 #G is a MultiplayerGame-object, and so are GK and GK0
@@ -52,4 +52,5 @@ print(log3, GK3, iso_type3)
 (logi, GKi, iso_typei) = iterate_until_isomorphic(G, limit=-1, print_size=False, verbose=True)
 export(GKi, "GKi")
 print(logi, GKi, iso_typei)
+
 '''
