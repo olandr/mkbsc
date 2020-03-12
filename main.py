@@ -35,8 +35,8 @@ Obs = [
 ]
 
 #G is a MultiplayerGame-object, and so are GK and GK0
-#G = MultiplayerGame.create(L, L0, Sigma, Delta, Obs)
-G = from_file("stuff")
+G = MultiplayerGame.create(L, L0, Sigma, Delta, Obs)
+
 GK = G.KBSC()
 export(GK, "GK")
 
