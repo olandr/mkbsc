@@ -4,61 +4,43 @@ from mkbsc import MultiplayerGame, iterate_until_isomorphic, \
                   export, to_string, from_string, to_file, from_file
 
 #states
-L = ["start", "draw", "0", "1", "a", "b", "aab", "abb", "A", "B"]
+L = ["start", "0", "1", "-1", "win", "lose"]
 #initial state
 L0 = "start"
 #action alphabet
-Sigma = (("0a", "1a"), ("0b", "1b"))
+Sigma = (("0", "+1"), ("0","-1"))
 #action labeled transitions
 Delta = [
-    ("start", ("0a", "0b"),  "0"),
-    ("start", ("0a", "1b"),  "b"),
-    ("start", ("1a", "0b"),  "a"),
-    ("start", ("1a", "1b"),  "0"),
+    ("start", ("0", "0"),   "0"),
 
-    ("0", ("0a", "0b"),  "1"),
-    ("0", ("0a", "1b"),  "B"),
-    ("0", ("1a", "0b"),  "A"),
-    ("0", ("1a", "1b"),  "1"),
+    ("0", ("0", "0"),   "0"),
+    ("0", ("0", "-1"),  "-1"),
+    ("0", ("+1", "0"),  "1"),
+    ("0", ("+1", "-1"), "lose"),
 
-    ("a", ("0a", "0b"),  "1"),
-    ("a", ("0a", "1b"),  "abb"),
-    ("a", ("1a", "0b"),  "A"),
-    ("a", ("1a", "1b"),  "A"),
+    ("1", ("0", "0"),   "lose"),
+    ("1", ("0", "-1"),  "win"),
+    ("1", ("+1", "0"),  "lose"),
+    ("1", ("+1", "-1"), "lose"),
 
-    ("b", ("0a", "0b"),  "1"),
-    ("b", ("0a", "1b"),  "B"),
-    ("b", ("1a", "0b"),  "aab"),
-    ("b", ("1a", "1b"),  "B"),
-
-    ("1", ("0a", "0b"),  "draw"),
-    ("1", ("0a", "1b"),  "B"),
-    ("1", ("1a", "0b"),  "A"),
-    ("1", ("1a", "1b"),  "draw"),
-
-    ("abb", ("0a", "0b"),  "B"),
-    ("abb", ("0a", "1b"),  "B"),
-    ("abb", ("1a", "0b"),  "draw"),
-    ("abb", ("1a", "1b"),  "B"),
-
-    ("aab", ("0a", "0b"),  "A"),
-    ("aab", ("0a", "1b"),  "draw"),
-    ("aab", ("1a", "0b"),  "A"),
-    ("aab", ("1a", "1b"),  "A")
+    ("-1", ("0", "0"),   "lose"),
+    ("-1", ("0", "-1"),  "lose"),
+    ("-1", ("+1", "0"),  "win"),
+    ("-1", ("+1", "-1"), "lose"),
 
 ]
 #observation partitioning
 Obs = [
-    [["start"], ["draw", "0", "1"], ["a", "abb"], ["b", "aab"], ["A"], ["B"]],
-    [["start"], ["draw", "0", "1"], ["b", "aab"], ["a", "abb"], ["A"], ["B"]]
+    [["start"], ["0", "1", "-1"], ["win"], ["lose"]],
+    [["start"], ["0", "1", "-1"], ["win"], ["lose"]]
 ]
 
 #G is a MultiplayerGame-object, and so are GK and GK0
 G = MultiplayerGame.create(L, L0, Sigma, Delta, Obs)
 
-to_file(G, "refinedWDL")
-#GK = G.KBSC()
-#export(GK, "GK")
+GK = G.KBSC()
+export(GK, "GK")
 
 #(log2, GK2, iso_type2) = iterate_until_isomorphic(G, limit=2, print_size=False, verbose=True)
 #export(GK2, "GK2")
+#print(log2, GK2, iso_type2)
