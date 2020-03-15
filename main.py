@@ -41,14 +41,14 @@ GK = G.KBSC()
 export(GK, "GK")
 
 
-'''
+
 (log2, GK2, iso_type2) = iterate_until_isomorphic(G, limit=2, print_size=False, verbose=True)
 export(GK2, "GK2")
 print(log2, GK2, iso_type2)
 (log3, GK3, iso_type3) = iterate_until_isomorphic(G, limit=3, print_size=False, verbose=True)
 export(GK3, "GK3")
 print(log3, GK3, iso_type3)
-
+'''
 (logi, GKi, iso_typei) = iterate_until_isomorphic(G, limit=-1, print_size=False, verbose=True)
 export(GKi, "GKi")
 print(logi, GKi, iso_typei)
