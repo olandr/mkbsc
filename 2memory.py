@@ -175,9 +175,9 @@ Obs = [
 G = MultiplayerGame.create(L, L0, Sigma, Delta, Obs)
 export(G, "2_memory_G")
 
-#GK = G.KBSC()
-#export(GK, "2_memory_GK")
+GK = G.KBSC()
+export(GK, "2_memory_GK")
 
-#(log2, GK2, iso_type2) = iterate_until_isomorphic(G, limit=1, print_size=False, verbose=True)
-#export(GK2, "memory_GK2")
-#print(log2, GK2, iso_type2)
+(log2, GK2, iso_type2) = iterate_until_isomorphic(G, limit=3, print_size=False, verbose=True)
+export(GK2, "2_memory_GK2")
+print(log2, GK2, iso_type2)
