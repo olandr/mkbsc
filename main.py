@@ -35,23 +35,17 @@ Obs = [
 ]
 
 #G is a MultiplayerGame-object, and so are GK and GK0
-G = MultiplayerGame.create(L, L0, Sigma, Delta, Obs)
+#G = MultiplayerGame.create(L, L0, Sigma, Delta, Obs)
+G = from_file("counter")
 export(G, "G")
 GK = G.KBSC()
-export(GK, "GK")
-
+export(GK, "GK1")
 
 
 (log2, GK2, iso_type2) = iterate_until_isomorphic(G, limit=2, print_size=False, verbose=True)
 export(GK2, "GK2")
 print(log2, GK2, iso_type2)
 
-'''
 (log3, GK3, iso_type3) = iterate_until_isomorphic(G, limit=3, print_size=False, verbose=True)
 export(GK3, "GK3")
 print(log3, GK3, iso_type3)
-
-'''
-(logi, GKi, iso_typei) = iterate_until_isomorphic(G, limit=-1, print_size=False, verbose=True)
-export(GKi, "GKi")
-print(logi, GKi, iso_typei)
